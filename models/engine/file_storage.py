@@ -70,3 +70,8 @@ class FileStorage:
             key = str(obj.__class__.__name__) + "." + str(obj.id)
             self.__objects.pop(key, None)
             self.save()
+
+    @property
+    def cities(self):
+        """returns the list of City instances"""
+

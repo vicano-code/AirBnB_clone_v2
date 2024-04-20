@@ -23,8 +23,9 @@ class HBNBCommand(cmd.Cmd):
     -Accepts commands via interactive mode & non-interactive mode
     """
     prompt = "(hbnb) "
-    classes = {"BaseModel", "User", "State", "City", "Amenity", "Place",
-               "Review"}
+    classes = {"BaseModel": BaseModel, "User": User, "State": State,
+               "City": City, "Amenity": Amenity, "Place": Place,
+               "Review": Review}
 
     def emptyline(self):
         '''overide default of running last command when prompt cmd is empty'''
@@ -39,21 +40,21 @@ class HBNBCommand(cmd.Cmd):
         print()
         return True
 
-    def do_create(self, arg):
-        '''
-        Creates a new instance of BaseModel, saves it (to the JSON file)
-        and prints the id. Ex: $ create BaseModel
-        '''
-        if len(arg) == 0:
+    def do_create(self, args):
+        """ Create an object of any class"""
+        if not args:
             print("** class name missing **")
             return
-        try:
-            args = shlex.split(arg)
-            new_instance = eval(args[0])()
-            for i in args[1:]:
+        args = args.split(" ")
+        if args[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        new_instance = HBNBCommand.classes[args[0]]()
+        for arg in args[1:]:
                 try:
-                    key = i.split("=")[0]
-                    value = i.split("=")[1]
+                    arg = arg.split("=")
+                    key = arg[0]
+                    value = arg[1]
                     if hasattr(new_instance, key):
                         value = value.replace("-", " ")
                         try:
@@ -63,11 +64,8 @@ class HBNBCommand(cmd.Cmd):
                         setattr(new_instance, key, value)
                 except(ValueError, IndexError):
                     pass
-            new_instance.save()
-            print(new_instance.id)
-        except Exception:
-            print("** class doesn't exist **")
-            return
+        new_instance.save()
+        print(new_instance.id)
 
     def do_show(self, line):
         '''
@@ -119,11 +117,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)

@@ -33,7 +33,7 @@ class DBStorage:
         """query current database session"""
         db_dict = {}
 
-        if cls != "":
+        if cls is not None:
             objs = self.__session.query(models.classes[cls]).all()
             for obj in objs:
                 key = "{}.{}".format(obj.__class__.__name__, obj.id)

@@ -51,19 +51,19 @@ class HBNBCommand(cmd.Cmd):
             return
         new_instance = HBNBCommand.classes[args[0]]()
         for arg in args[1:]:
-                try:
-                    arg = arg.split("=")
-                    key = arg[0]
-                    value = arg[1]
-                    if hasattr(new_instance, key):
-                        value = value.replace("-", " ")
-                        try:
-                            value = eval(value)
-                        except Exception:
-                            pass
-                        setattr(new_instance, key, value)
-                except(ValueError, IndexError):
-                    pass
+            try:
+                arg = arg.split("=")
+                key = arg[0]
+                value = arg[1]
+                if hasattr(new_instance, key):
+                    value = value.replace("-", " ")
+                    try:
+                        value = eval(value)
+                    except Exception:
+                        pass
+                    setattr(new_instance, key, value)
+            except(ValueError, IndexError):
+                pass
         new_instance.save()
         print(new_instance.id)
 

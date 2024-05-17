@@ -4,7 +4,7 @@ Starts a Flask web application listening on 0.0.0.0, port 5000
 Usage: python3 -m web_flask.0-hello_route
 """
 
-from flask import Flask, escape
+from flask import Flask
 
 app = Flask(__name__)
 
@@ -31,8 +31,7 @@ def c_text(text):
 @app.route('/python/<text>/', strict_slashes=False)
 def python_text(text):
     """display “Python ”, followed by the value of the text variable"""
-    text = text.replace('_', ' ')
-    return 'Python {}'.format(escape(text))
+    return 'Python {}'.format(text.replace('_', ' '))
 
 
 if __name__ == '__main__':

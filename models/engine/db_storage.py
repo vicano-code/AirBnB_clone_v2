@@ -11,14 +11,13 @@ from models.state import State
 from models.city import City
 from models.base_model import Base
 
-
 class DBStorage:
     """database storage class"""
     __engine = None
     __session = None
 
     def __init__(self):
-        """initialise storage attributes"""
+        """create engine and link to mysql database"""
         user = getenv("HBNB_MYSQL_USER")
         pwd = getenv("HBNB_MYSQL_PWD")
         host = getenv("HBNB_MYSQL_HOST")
@@ -34,7 +33,7 @@ class DBStorage:
         db_dict = {}
 
         if cls is not None:
-            objs = self.__session.query(models.classes[cls]).all()
+            objs = self.__session.query(models.classes[cls.__name__]).all()
             for obj in objs:
                 key = "{}.{}".format(obj.__class__.__name__, obj.id)
                 db_dict[key] = obj
@@ -69,3 +68,7 @@ class DBStorage:
         """Delete from current database session"""
         if obj is not None:
             self.__session.delete(obj)
+
+    def close(self):
+        """Remove private session attribute"""
+        self.__session.close()

@@ -19,9 +19,14 @@ else:
     from models.engine import file_storage
     storage = file_storage.FileStorage()
 
-classes = {"User": User, "BaseModel": BaseModel,
-           "Place": Place, "State": State,
-           "City": City, "Amenity": Amenity,
-           "Review": Review}
+classes = {
+    "User": User,
+    "BaseModel": BaseModel,
+    "Place": Place,
+    "State": State,
+    "City": City,
+    "Amenity": Amenity,
+    "Review": Review
+}
 
 storage.reload()

@@ -4,6 +4,7 @@ HBNB Flask web application
 """
 from flask import Flask, render_template
 from models import storage
+from models import *
 
 app = Flask(__name__)
 
